@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muscle Fitness · Hardcore Steel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <style>
+    /* ─── HARDCODE ANIMATIONS ─── */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #d0d0d0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background-image: radial-gradient(circle at 20% 30%, #1a1a1a 0%, #0a0a0a 80%);
+      overflow-x: hidden;
+    }
+
+    .app-shell {
+      max-width: 1240px;
+      width: 100%;
+      background: #121212;
+      border-radius: 28px;
+      padding: 24px 28px 20px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      border: 1px solid #2a2a2a;
+      position: relative;
+      overflow: hidden;
+      min-height: 90vh;
+    }
+
+    .app-shell::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 28px;
+      animation: grainShift 8s steps(6) infinite;
+      opacity: 0.6;
+    }
+    @keyframes grainShift {
+      0%,
+      100% {
+        transform: translate(0, 0);
+      }
+      25% {
+        transform: translate(-15px, -10px);
+      }
+      50% {
+        transform: translate(10px, -15px);
+      }
+      75% {
+        transform: translate(-5px, 20px);
+      }
+    }
+
+    .app-shell>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── TYPOGRAPHY ─── */
+    .vintage-heading {
+      font-family: 'Anton', sans-serif;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #e8e8e8;
+      text-shadow: 3px 3px 0 rgba(192, 92, 30, 0.4);
+    }
+    .vintage-sub {
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #9a9a9a;
+    }
+    .text-rust {
+      color: #c05c1e;
+    }
+    .border-rust {
+      border-color: #c05c1e;
+    }
+    .bg-rust {
+      background: #c05c1e;
+    }
+    .bg-rust-dark {
+      background: #8a4515;
+    }
+
+    /* ─── GLITCH EFFECT ─── */
+    .glitch {
+      animation: glitch 3s infinite;
+    }
+    @keyframes glitch {
+      0%,
+      95%,
+      100% {
+        transform: translate(0);
+        opacity: 1;
+      }
+      96% {
+        transform: translate(-3px, 2px) skewX(-2deg);
+        opacity: 0.9;
+        text-shadow: 3px 0 #c05c1e, -3px 0 #3b82f6;
+      }
+      97% {
+        transform: translate(3px, -2px) skewX(2deg);
+        opacity: 0.9;
+        text-shadow: -3px 0 #c05c1e, 3px 0 #3b82f6;
+      }
+    }
+
+    /* ─── PAGE TRANSITIONS ─── */
+    .page {
+      display: none;
+      animation: fadeUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.97);
+        filter: blur(2px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    /* ─── STEEL PULSE ON CARDS ─── */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(2px);
+      border: 1px solid #2a2a2a;
+      border-radius: 20px;
+      padding: 20px 22px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+    }
+    .glass-card:hover {
+      border-color: #c05c1e;
+      box-shadow: 0 0 30px rgba(192, 92, 30, 0.08), inset 0 0 30px rgba(192, 92, 30, 0.02);
+      transform: translateY(-2px);
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn-primary {
+      background: #c05c1e;
+      border: none;
+      color: #0a0a0a;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Oswald', sans-serif;
+      box-shadow: 0 4px 12px rgba(192, 92, 30, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .btn-primary:hover {
+      background: #d86a28;
+      box-shadow: 0 6px 20px rgba(192, 92, 30, 0.6);
+      transform: scale(1.03);
+    }
+    .btn-primary:hover::after {
+      opacity: 1;
+    }
+    .btn-primary:active {
+      animation: clang 0.3s ease;
+    }
+    @keyframes clang {
+      0%,
+      100% {
+        transform: rotate(0);
+      }
+      20% {
+        transform: rotate(-6deg) scale(0.95);
+      }
+      40% {
+        transform: rotate(6deg) scale(0.95);
+      }
+      60% {
+        transform: rotate(-3deg);
+      }
+      80% {
+        transform: rotate(3deg);
+      }
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #4a4a4a;
+      color: #c0c0c0;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Oswald', sans-serif;
+    }
+    .btn-secondary:hover {
+      border-color: #c05c1e;
+      color: #e8e8e8;
+      background: rgba(192, 92, 30, 0.08);
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(192, 92, 30, 0.1);
+    }
+
+    /* ─── PROGRESS BARS ─── */
+    .progress-track {
+      height: 6px;
+      background: #1a1a1a;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 4px;
+      border: 1px solid #2a2a2a;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #c05c1e, #e07a2e);
+      transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      width: 0%;
+    }
+    .progress-fill.blue {
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    }
+    .progress-fill.green {
+      background: linear-gradient(90deg, #22c55e, #4ade80);
+    }
+    .progress-fill.purple {
+      background: linear-gradient(90deg, #a855f7, #c084fc);
+    }
+
+    /* ─── STREAK PULSE ─── */
+    .streak-pulse {
+      animation: pulseGlow 2s infinite;
+    }
+    @keyframes pulseGlow {
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(192, 92, 30, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(192, 92, 30, 0);
+      }
+    }
+
+    /* ─── STAT COUNTER GLOW ─── */
+    .stat-number {
+      display: inline-block;
+      font-family: 'Anton', sans-serif;
+      font-size: 2.2rem;
+      line-height: 1;
+      background: linear-gradient(135deg, #c05c1e, #e07a2e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: all 0.3s;
+    }
+
+    /* ─── NAV LINKS ─── */
+    .page-nav a {
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.8rem;
+      padding: 8px 18px;
+      border-radius: 40px;
+      color: #7a7a7a;
+      text-decoration: none;
+      transition: all 0.2s;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      position: relative;
+      cursor: pointer;
+    }
+    .page-nav a:hover {
+      color: #d0d0d0;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .page-nav a.active {
+      color: #c05c1e;
+      border-bottom-color: #c05c1e;
+      background: rgba(192, 92, 30, 0.06);
+    }
+    .page-nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #c05c1e;
+      animation: navGlow 1.5s infinite;
+    }
+    @keyframes navGlow {
+      0%,
+      100% {
+        opacity: 0.3;
+        box-shadow: 0 0 5px #c05c1e;
+      }
+      50% {
+        opacity: 1;
+        box-shadow: 0 0 20px #c05c1e;
+      }
+    }
+
+    /* ─── INPUT FOCUS ─── */
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #c05c1e;
+      box-shadow: 0 0 0 3px rgba(192, 92, 30, 0.2), 0 0 30px rgba(192, 92, 30, 0.05);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 640px) {
+      .app-shell {
+        padding: 16px 12px 12px;
+        border-radius: 20px;
+      }
+      .page-nav a {
+        font-size: 0.65rem;
+        padding: 6px 10px;
+      }
+      .glass-card {
+        padding: 16px;
+      }
+      .stat-number {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c05c1e;
+      border-radius: 12px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #e07a2e;
+    }
+
+    /* ─── FOOD LOOKUP HIGHLIGHT ─── */
+    .macro-auto {
+      border-color: #c05c1e !important;
+      box-shadow: 0 0 20px rgba(192, 92, 30, 0.15) !important;
+      transition: all 0.3s;
+    }
+    .macro-auto:focus {
+      box-shadow: 0 0 30px rgba(192, 92, 30, 0.25) !important;
+    }
+
+    .food-hint {
+      font-size: 0.7rem;
+      color: #7a7a7a;
+      margin-top: 2px;
+      min-height: 18px;
+    }
+    .food-hint.found {
+      color: #4ade80;
+    }
+    .food-hint.not-found {
+      color: #ef4444;
+    }
+
+    /* ─── QUOTE BLOCK ─── */
+    .quote-block {
+      border-left: 3px solid #c05c1e;
+      padding-left: 16px;
+      background: rgba(192, 92, 30, 0.04);
+      border-radius: 0 8px 8px 0;
+    }
+    .influencer-quote {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 14px 18px;
+      border-left: 3px solid #c05c1e;
+      font-style: italic;
+      color: #b0b0b0;
+      font-size: 0.9rem;
+    }
+    .influencer-quote .author {
+      font-style: normal;
+      font-weight: 600;
+      color: #c05c1e;
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+      font-size: 0.7rem;
+    }
+
+    /* ─── PLAN CARDS ─── */
+    .plan-card {
+      background: #1a1a1a;
+      border-radius: 20px;
+      padding: 24px 20px;
+      border: 1px solid #2a2a2a;
+      transition: border 0.2s, transform 0.2s;
+      text-align: center;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .plan-card:hover {
+      border-color: #c05c1e;
+      transform: translateY(-3px);
+    }
+    .plan-card .price {
+      font-family: 'Anton', sans-serif;
+      font-size: 2.2rem;
+      color: #c05c1e;
+      line-height: 1.2;
+    }
+    .plan-card .plan-name {
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #e8e8e8;
+      font-size: 1.2rem;
+    }
+
+    /* ─── PROFILE SELECTOR ─── */
+    .profile-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .profile-selector .option-btn {
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      color: #9a9a9a;
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .profile-selector .option-btn:hover {
+      border-color: #5a5a5a;
+      color: #d0d0d0;
+    }
+    .profile-selector .option-btn.active {
+      background: #c05c1e;
+      border-color: #c05c1e;
+      color: #0a0a0a;
+    }
+
+    /* ─── FILTER BUTTONS ─── */
+    .filter-btn {
+      background: transparent;
+      border: 1px solid #2a2a2a;
+      color: #7a7a7a;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Oswald', sans-serif;
+    }
+    .filter-btn:hover {
+      border-color: #5a5a5a;
+      color: #d0d0d0;
+    }
+    .filter-btn.active {
+      background: #c05c1e;
+      border-color: #c05c1e;
+      color: #0a0a0a;
+    }
+
+    /* ─── LIBRARY CARDS ─── */
+    .library-card {
+      background: #1a1a1a;
+      border-radius: 18px;
+      padding: 18px 20px 20px;
+      border: 1px solid #2a2a2a;
+      transition: transform 0.15s, border-color 0.2s;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .library-card:hover {
+      border-color: #c05c1e;
+      transform: translateY(-2px);
+    }
+    .library-card .level-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 12px;
+      border-radius: 40px;
+      background: rgba(192, 92, 30, 0.15);
+      color: #c05c1e;
+      align-self: flex-start;
+      font-family: 'Oswald', sans-serif;
+    }
+    .library-card .level-badge.intermediate {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+    .library-card .level-badge.advanced {
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+    }
+    .library-card .level-badge.elite {
+      background: rgba(192, 92, 30, 0.30);
+      color: #e07a2e;
+      border: 1px solid #c05c1e;
+    }
+
+    /* ─── FOOD ITEMS ─── */
+    .food-item {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .food-item:last-child {
+      border-bottom: none;
+    }
+    .food-item .food-name {
+      font-weight: 500;
+      min-width: 80px;
+      color: #d0d0d0;
+    }
+    .food-item .food-macros {
+      display: flex;
+      gap: 12px;
+      font-size: 0.8rem;
+      color: #9a9a9a;
+    }
+
+    /* ─── LOG ITEMS ─── */
+    .log-item {
+      background: #1a1a1a;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border-left: 3px solid #c05c1e;
+      transition: background 0.2s;
+    }
+    .log-item:hover {
+      background: #242424;
+    }
+
+    /* ─── EMPTY STATE ─── */
+    .empty-state {
+      color: #5a5a5a;
+      text-align: center;
+      padding: 24px 0;
+      font-size: 0.9rem;
+    }
+
+    /* ─── SCROLL LOG ─── */
+    .scroll-log {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .scroll-log::-webkit-scrollbar {
+      width: 3px;
+    }
+    .scroll-log::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+    .scroll-log::-webkit-scrollbar-thumb {
+      background: #c05c1e;
+      border-radius: 12px;
+    }
+
+    /* ─── MACRO STAT ─── */
+    .macro-stat {
+      background: #1a1a1a;
+      border-radius: 14px;
+      padding: 12px 16px;
+      border-left: 3px solid #c05c1e;
+    }
+    .macro-stat.blue {
+      border-left-color: #3b82f6;
+    }
+    .macro-stat.green {
+      border-left-color: #22c55e;
+    }
+    .macro-stat.purple {
+      border-left-color: #a855f7;
+    }
+
+    .btn-danger {
+      background: transparent;
+      border: none;
+      color: #c05c1e;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .btn-danger:hover {
+      background: rgba(192, 92, 30, 0.15);
+    }
+
+    /* ─── DATALIST STYLING ─── */
+    input::-webkit-calendar-picker-indicator {
+      filter: invert(0.6);
+      cursor: pointer;
+    }
+
+    /* ─── GRAMS RESET BUTTON ─── */
+    .reset-grams-btn {
+      background: transparent;
+      border: none;
+      color: #5a5a5a;
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .reset-grams-btn:hover {
+      color: #c05c1e;
+      background: rgba(192, 92, 30, 0.1);
+    }
+
+    /* ─── CLIENT PROFILE FORM ─── */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.75rem;
+      color: #9a9a9a;
+      margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      color: #d0d0d0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #c05c1e;
+      box-shadow: 0 0 0 3px rgba(192, 92, 30, 0.15);
+    }
+    .form-group select option {
+      background: #1a1a1a;
+      color: #d0d0d0;
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── PROFILE MODAL ─── */
+    .profile-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: modalFade 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    .profile-modal.active {
+      display: flex;
+    }
+
+    @keyframes modalFade {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .profile-modal .modal-content {
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #121212;
+      border: 1px solid #2a2a2a;
+      border-radius: 28px;
+      padding: 36px 40px 32px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 60px rgba(192, 92, 30, 0.05);
+      position: relative;
+    }
+    .profile-modal .modal-content::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 28px;
+      animation: grainShift 8s steps(6) infinite;
+      opacity: 0.4;
+    }
+    .profile-modal .modal-content>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-modal .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      color: #5a5a5a;
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .profile-modal .modal-close:hover {
+      color: #c05c1e;
+    }
+    .profile-modal .modal-close:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Scroll inside modal */
+    .profile-modal .modal-content::-webkit-scrollbar {
+      width: 3px;
+    }
+    .profile-modal .modal-content::-webkit-scrollbar-track {
+      background: #1a1a1a;
+      border-radius: 12px;
+    }
+    .profile-modal .modal-content::-webkit-scrollbar-thumb {
+      background: #c05c1e;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── PROFILE MODAL ─── -->
+  <div class="profile-modal" id="profileModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalCloseBtn" disabled>✕</button>
+      <div class="text-center mb-5">
+        <span class="text-5xl block mb-2">⛓️</span>
+        <h2 class="vintage-heading text-3xl text-white">Welcome to <span class="text-rust">Muscle</span>Fit</h2>
+        <p class="text-sm text-white/40 vintage-sub mt-1">Before you enter the forge, tell us about yourself</p>
+        <div class="mt-3 text-xs text-white/30 border-t border-[#2a2a2a] pt-3">
+          “You'd always wish you started sooner. But <span class="text-rust">TODAY</span> is the youngest you will ever be.”
+        </div>
+      </div>
+
+      <form id="modalProfileForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="modalClientAge">Age</label>
+            <input type="number" id="modalClientAge" placeholder="e.g. 28" min="10" max="120" required />
+          </div>
+          <div class="form-group">
+            <label for="modalClientExperience">Years of Experience</label>
+            <select id="modalClientExperience" required>
+              <option value="">Select experience</option>
+              <option value="beginner">Beginner (0-1 year)</option>
+              <option value="intermediate">Intermediate (1-3 years)</option>
+              <option value="advanced">Advanced (3-5 years)</option>
+              <option value="elite">Elite (5+ years)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="modalClientPurpose">What's Your Primary Purpose?</label>
+          <select id="modalClientPurpose" required>
+            <option value="">Select your goal</option>
+            <option value="weight-loss">Weight Loss & Fat Burn</option>
+            <option value="muscle-gain">Muscle Gain & Hypertrophy</option>
+            <option value="strength">Strength & Power</option>
+            <option value="endurance">Endurance & Conditioning</option>
+            <option value="athletic">Athletic Performance</option>
+            <option value="health">General Health & Wellness</option>
+            <option value="competition">Competition Prep</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="modalClientGoals">Specific Goals (Optional)</label>
+          <textarea id="modalClientGoals" placeholder="e.g. Bench 100kg, Run 5km, Build 5kg muscle..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary w-full justify-center">⚡ Enter the Forge</button>
+      </form>
+
+      <p class="text-center text-[10px] text-white/20 mt-3">Your data is stored locally and never shared.</p>
+    </div>
+  </div>
+
+  <!-- ─── MAIN APP ─── -->
+  <div class="app-shell" id="app">
+
+    <!-- ─── HEADER ─── -->
+    <div class="flex items-center justify-between mb-4 flex-wrap gap-2 border-b border-[#2a2a2a] pb-3">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl font-bold tracking-widest vintage-heading text-white/90 glitch">🏋️ <span class="text-rust">Muscle</span>Fit</span>
+        <span class="text-[10px] text-white/20 bg-white/5 px-3 py-1 rounded-full uppercase tracking-widest font-bold border border-[#2a2a2a]">
+          <a href="#" class="text-rust hover:text-[#e07a2e] transition-colors" onclick="navigateTo('about'); return false;">www.musclefitness.com</a>
+        </span>
+      </div>
+      <div class="flex items-center gap-2 text-sm text-white/30">
+        <span class="hidden sm:inline text-rust animate-pulse">⚙️</span>
+        <span id="currentDateDisplay" class="font-mono text-xs bg-white/5 px-3 py-1 rounded-full border border-[#2a2a2a]"></span>
+      </div>
+    </div>
+
+    <!-- ─── PAGE NAV ─── -->
+    <nav class="page-nav flex flex-wrap gap-1 border-b border-[#2a2a2a] pb-2 mb-4 overflow-x-auto" id="pageNav">
+      <a data-page="about" class="active"><span class="icon">🔥</span> About</a>
+      <a data-page="profile"><span class="icon">👤</span> Profile</a>
+      <a data-page="dashboard"><span class="icon">📊</span> Dashboard</a>
+      <a data-page="fuel"><span class="icon">🥩</span> Fuel</a>
+      <a data-page="ironlog"><span class="icon">💪</span> Iron Log</a>
+      <a data-page="library"><span class="icon">📚</span> Library</a>
+      <a data-page="plans"><span class="icon">🏆</span> Plans</a>
+    </nav>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- PAGE: ABOUT (unchanged) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="page active" id="page-about">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div class="lg:col-span-3">
+          <div class="glass-card border-l-4 border-rust relative overflow-hidden">
+            <div class="absolute top-0 right-0 text-8xl opacity-5 select-none text-rust" style="transform: rotate(15deg); animation: pulse 4s infinite;">⛓️</div>
+            <h1 class="vintage-heading text-4xl sm:text-5xl font-bold text-white leading-tight mb-1 glitch">
+              About <span class="text-rust">Muscle</span>Fit
+            </h1>
+            <p class="text-sm text-white/50 uppercase tracking-widest vintage-sub mb-4">Forged in sweat. Built on discipline.</p>
+            <div class="space-y-4 text-white/80 text-sm leading-relaxed">
+              <p>
+                Muscle Fitness was built from a <span class="text-rust font-bold">real transformation</span> —
+                from <span class="text-white font-bold">88 kg to 68 kg</span>, from insecurity and low confidence
+                to discipline, strength and ambition.
+              </p>
+              <p>
+                What began as a personal journey to lose weight became a mission to inspire the younger generation
+                to take control of their health, build confidence and become stronger both physically and mentally.
+              </p>
+              <div class="quote-block">
+                “Today, the journey continues toward <strong class="text-rust">professional competition</strong>,
+                proving that your starting point does not define how far you can go.”
+              </div>
+              <p class="text-lg font-semibold text-white/90">
+                <span class="text-rust">Start today.</span> Build yourself.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-3 mt-5">
+              <button class="btn-primary" onclick="navigateTo('plans')">⚡ Join the Pack</button>
+              <button class="btn-secondary" onclick="navigateTo('ironlog')">📝 Log Your Iron</button>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-2 space-y-4">
+          <div class="glass-card text-center hover:border-rust transition-all">
+            <p class="stat-number text-5xl">88 → 68</p>
+            <p class="text-xs text-white/40 uppercase tracking-wider">kg transformation</p>
+          </div>
+          <div class="glass-card text-center hover:border-rust transition-all">
+            <p class="stat-number text-5xl">10+</p>
+            <p class="text-xs text-white/40 uppercase tracking-wider">years of coaching wisdom</p>
+          </div>
+          <div class="glass-card text-center hover:border-rust transition-all">
+            <p class="stat-number text-5xl">💪</p>
+            <p class="text-xs text-white/40 uppercase tracking-wider">All ages · No ego · Just iron</p>
+          </div>
+          <div class="glass-card text-center border-rust border animate-pulse bg-rust/5">
+            <p class="text-sm text-white/60 font-medium">“You'd always wish you started sooner. But <span class="text-rust">TODAY</span> is the youngest you will ever be.”</p>
+            <p class="text-[10px] text-white/30 mt-1">— Muscle Fitness Creed</p>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
+        <div class="influencer-quote">
+          “The last three or four reps is what makes the muscle grow. This area of pain divides the champion.”
+          <div class="author">— Arnold Schwarzenegger</div>
+        </div>
+        <div class="influencer-quote">
+          “Everybody wants to be a bodybuilder, but nobody wants to lift no heavy-ass weights.”
+          <div class="author">— Ronnie Coleman</div>
+        </div>
+        <div class="influencer-quote">
+          “Discipline equals freedom. You have to be willing to do what others won't.”
+          <div class="author">— Jocko Willink</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- PAGE: PROFILE (standalone, same as modal) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="page" id="page-profile">
+      <div class="glass-card">
+        <h2 class="vintage-heading text-3xl text-white mb-1">👤 Your Iron Profile</h2>
+        <p class="text-sm text-white/40 vintage-sub mb-5">Tell us about yourself so we can forge the perfect path</p>
+
+        <form id="clientProfileForm" class="max-w-2xl">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clientAge">Age</label>
+              <input type="number" id="clientAge" placeholder="e.g. 28" min="10" max="120" required />
+            </div>
+            <div class="form-group">
+              <label for="clientExperience">Years of Training Experience</label>
+              <select id="clientExperience" required>
+                <option value="">Select experience</option>
+                <option value="beginner">Beginner (0-1 year)</option>
+                <option value="intermediate">Intermediate (1-3 years)</option>
+                <option value="advanced">Advanced (3-5 years)</option>
+                <option value="elite">Elite (5+ years)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="clientPurpose">What's Your Primary Purpose?</label>
+            <select id="clientPurpose" required>
+              <option value="">Select your goal</option>
+              <option value="weight-loss">Weight Loss & Fat Burn</option>
+              <option value="muscle-gain">Muscle Gain & Hypertrophy</option>
+              <option value="strength">Strength & Power</option>
+              <option value="endurance">Endurance & Conditioning</option>
+              <option value="athletic">Athletic Performance</option>
+              <option value="health">General Health & Wellness</option>
+              <option value="competition">Competition Prep</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="clientGoals">Specific Goals (Optional)</label>
+            <textarea id="clientGoals" placeholder="e.g. Bench 100kg, Run 5km, Build 5kg muscle..."></textarea>
+          </div>
+
+          <div class="flex gap-3 mt-2">
+            <button type="submit" class="btn-primary">⚡ Save Profile</button>
+            <button type="button" class="btn-secondary" id="clearProfileBtn">Clear Profile</button>
+          </div>
+        </form>
+
+        <div id="profileDisplay" class="mt-5 pt-4 border-t border-[#2a2a2a] hidden">
+          <h3 class="vintage-sub text-sm text-white/60 mb-2">📋 Your Saved Profile</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div><span class="text-white/40">Age:</span> <span id="displayAge" class="text-white/80 font-medium">—</span></div>
+            <div><span class="text-white/40">Experience:</span> <span id="displayExperience" class="text-white/80 font-medium">—</span></div>
+            <div><span class="text-white/40">Purpose:</span> <span id="displayPurpose" class="text-white/80 font-medium">—</span></div>
+            <div class="sm:col-span-2"><span class="text-white/40">Goals:</span> <span id="displayGoals" class="text-white/80 font-medium">—</span></div>
+          </div>
+          <div class="mt-2 text-xs text-white/30">
+            <span class="text-rust">⚡</span> Your profile is stored locally and used to personalize your experience.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- PAGE: DASHBOARD -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="page" id="page-dashboard">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="lg:col-span-2 glass-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-semibold text-white/90">👋 Welcome back, <span class="text-rust" id="dashName">Athlete</span></h2>
+            <p class="text-white/40 text-sm mt-0.5">Keep the iron moving. Today is your day.</p>
+            <div class="flex items-center gap-4 mt-3 flex-wrap">
+              <div class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-[#2a2a2a] streak-pulse">
+                <span class="text-rust text-lg">🔥</span>
+                <span class="stat-number text-3xl" id="dashStreak">0</span>
+                <span class="text-xs text-white/40 font-medium uppercase tracking-wider">day streak</span>
+              </div>
+              <span class="text-xs text-white/30">⏱️ Last logged: <span id="dashLastWorkout" class="text-white/60">—</span></span>
+            </div>
+            <div id="dashProfileSummary" class="mt-2 text-xs text-white/40 flex flex-wrap gap-3"></div>
+          </div>
+          <div class="flex gap-2 flex-wrap w-full sm:w-auto">
+            <button class="btn-primary text-sm" onclick="navigateTo('ironlog')">➕ Log Workout</button>
+            <button class="btn-secondary" onclick="navigateTo('fuel')">🥩 Track Food</button>
+            <button class="btn-secondary" onclick="navigateTo('profile')">👤 Edit Profile</button>
+          </div>
+        </div>
+        <div class="glass-card flex flex-col justify-center">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="text-center">
+              <p class="stat-number text-3xl" id="dashCalories">0</p>
+              <p class="text-xs text-white/40 uppercase tracking-wide">Calories</p>
+            </div>
+            <div class="text-center">
+              <p class="stat-number text-3xl" id="dashWorkouts">0</p>
+              <p class="text-xs text-white/40 uppercase tracking-wide">Workouts (7d)</p>
+            </div>
+            <div class="text-center">
+              <p class="stat-number text-3xl" id="dashProtein">0g</p>
+              <p class="text-xs text-white/40 uppercase tracking-wide">Protein</p>
+            </div>
+            <div class="text-center">
+              <p class="stat-number text-3xl" id="dashCarbs">0g</p>
+              <p class="text-xs text-white/40 uppercase tracking-wide">Carbs</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-5 text-center text-xs text-white/30 border-t border-white/5 pt-4">
+        “You'd always wish you started sooner. But <span class="text-rust/70 font-medium">TODAY</span> is the youngest you will ever be.”
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- PAGE: FUEL -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="page" id="page-fuel">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="lg:col-span-1 glass-card">
+          <h3 class="font-semibold text-white/90 mb-3 vintage-sub">➕ Add Fuel</h3>
+          <div class="space-y-3">
+            <div>
+              <input type="text" id="foodName" placeholder="Type food name (e.g. chicken breast)" list="foodSuggestions" autocomplete="off" />
+              <datalist id="foodSuggestions">
+                <option value="chicken breast">
+                <option value="chicken thigh">
+                <option value="rice">
+                <option value="brown rice">
+                <option value="egg">
+                <option value="egg white">
+                <option value="oats">
+                <option value="banana">
+                <option value="broccoli">
+                <option value="sweet potato">
+                <option value="salmon">
+                <option value="tuna">
+                <option value="whey protein">
+                <option value="olive oil">
+                <option value="almonds">
+                <option value="peanut butter">
+                <option value="greek yogurt">
+                <option value="cottage cheese">
+                <option value="tofu">
+                <option value="quinoa">
+                <option value="pasta">
+                <option value="potato">
+                <option value="avocado">
+                <option value="beef mince">
+                <option value="steak">
+                <option value="milk">
+                <option value="protein bar">
+              </datalist>
+              <div id="foodHint" class="food-hint">💡 Type a food name – macros auto‑fill</div>
+            </div>
+            <div>
+              <label class="text-xs text-white/40 uppercase tracking-wider block mb-1">Amount (grams)</label>
+              <div class="relative">
+                <input type="number" id="foodGrams" placeholder="e.g. 150" min="0" step="any" value="100" class="pr-12" />
+                <button id="clearGramsBtn" class="reset-grams-btn absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-white/40 hover:text-rust transition-colors" title="Reset to 100g">
+                  <span>↺</span> <span class="hidden sm:inline">100g</span>
+                </button>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <input type="number" id="foodCal" placeholder="Cal" min="0" step="any" />
+              <input type="number" id="foodProtein" placeholder="Protein (g)" min="0" step="any" />
+              <input type="number" id="foodCarbs" placeholder="Carbs (g)" min="0" step="any" />
+              <input type="number" id="foodFats" placeholder="Fats (g)" min="0" step="any" />
+            </div>
+            <button class="btn-primary w-full justify-center" id="addFoodBtn">➕ Add Food</button>
+          </div>
+          <div class="mt-4 pt-4 border-t border-[#2a2a2a]">
+            <div class="flex justify-between text-xs text-white/40">
+              <span>Today's entries</span>
+              <span id="foodCount">0 items</span>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-2 space-y-4">
+          <div class="glass-card">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="macro-stat">
+                <div class="flex justify-between text-sm">
+                  <span class="text-white/60">🔥 Calories</span>
+                  <span class="font-bold text-white/90" id="macroCalTotal">0</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" id="macroCalBar" style="width:0%"></div></div>
+                <div class="text-[10px] text-white/30 mt-1">goal: 2500</div>
+              </div>
+              <div class="macro-stat blue">
+                <div class="flex justify-between text-sm">
+                  <span class="text-white/60">💪 Protein</span>
+                  <span class="font-bold text-white/90" id="macroProteinTotal">0g</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill blue" id="macroProteinBar" style="width:0%"></div></div>
+                <div class="text-[10px] text-white/30 mt-1">goal: 180g</div>
+              </div>
+              <div class="macro-stat green">
+                <div class="flex justify-between text-sm">
+                  <span class="text-white/60">🌾 Carbs</span>
+                  <span class="font-bold text-white/90" id="macroCarbsTotal">0g</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill green" id="macroCarbsBar" style="width:0%"></div></div>
+                <div class="text-[10px] text-white/30 mt-1">goal: 300g</div>
+              </div>
+              <div class="macro-stat purple">
+                <div class="flex justify-between text-sm">
+                  <span class="text-white/60">🧈 Fats</span>
+                  <span class="font-bold text-white/90" id="macroFatsTotal">0g</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill purple" id="macroFatsBar" style="width:0%"></div></div>
+                <div class="text-[10px] text-white/30 mt-1">goal: 70g</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card">
+            <h4 class="font-medium text-white/80 mb-2 vintage-sub">📋 Today's Fuel</h4>
+            <div id="foodListContainer" class="space-y-1 max-h-60 overflow-y-auto pr-1"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- PAGE: IRON LOG (unchanged) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="page" id="page-ironlog">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="lg:col-span-1 glass-card">
+          <h3 class="font-semibold text-white/90 mb-3 vintage-sub">🏋️ Log Iron</h3>
+          <div class="space-y-3">
+            <input type="text" id="exerciseName" placeholder="Exercise (e.g. Bench Press)" />
+            <div class="grid grid-cols-3 gap-2">
+              <input type="number" id="exerciseSets" placeholder="Sets" min="0" />
+              <input type="number" id="exerciseReps" placeholder="Reps" min="0" />
+              <input type="number" id="exerciseWeight" placeholder="Weight (kg)" min="0" />
+            </div>
+            <button class="btn-primary w-full justify-center" id="addWorkoutBtn">➕ Log Workout</button>
+          </div>
+          <div class="mt-4 pt-4 border-t border-[#2a2a2a] text-xs text-white/40">
+            <span id="logCount">0 exercises logged today</span>
+          </div>
+        </div>
+        <div class="lg:col-span-2 glass-card">
+          <h4 class="font-medium text-white/80 mb-2 vintage-sub">📜 Iron History</h4>
+          <div id="workoutListContainer" class="scroll-log space-y-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- PAGE: LIBRARY (unchanged) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="page" id="page-library">
+      <div class="flex flex-wrap gap-2 mb-4" id="filterContainer">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="beginner">Beginner</button>
+        <button class="filter-btn" data-filter="intermediate">Intermediate</button>
+        <button class="filter-btn" data-filter="advanced">Advanced</button>
+        <button class="filter-btn" data-filter="elite">Elite (Bumstead)</button>
+      </div>
+      <div id="libraryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      <div class="mt-4 text-xs text-white/30 text-center border-t border-[#2a2a2a] pt-3">
+        * Elite routines based on Chris Bumstead's 8‑day split – for advanced lifters only.
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- PAGE: PLANS (unchanged) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="page" id="page-plans">
+      <div class="glass-card mb-5">
+        <h2 class="vintage-heading text-3xl text-center text-white">⚔️ Build Your Iron Path</h2>
+        <p class="text-center text-white/50 text-sm vintage-sub mt-1">Customize your training experience and choose your pack</p>
+      </div>
+      <div class="glass-card mb-5">
+        <h3 class="vintage-sub text-base text-white/80 mb-3">🧾 Your Training Profile</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="text-xs text-white/40 uppercase tracking-wider block mb-1">Years of Experience</label>
+            <div class="profile-selector" id="expSelector">
+              <button class="option-btn" data-value="<1">&lt;1</button>
+              <button class="option-btn" data-value="1-3">1-3</button>
+              <button class="option-btn" data-value="3-5">3-5</button>
+              <button class="option-btn" data-value="5+">5+</button>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs text-white/40 uppercase tracking-wider block mb-1">Days per Week</label>
+            <div class="profile-selector" id="freqSelector">
+              <button class="option-btn" data-value="2">2</button>
+              <button class="option-btn" data-value="3">3</button>
+              <button class="option-btn" data-value="4">4</button>
+              <button class="option-btn" data-value="5">5</button>
+              <button class="option-btn" data-value="6">6</button>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs text-white/40 uppercase tracking-wider block mb-1">Gym Split</label>
+            <div class="profile-selector" id="splitSelector">
+              <button class="option-btn" data-value="Full Body">Full Body</button>
+              <button class="option-btn" data-value="Upper/Lower">Upper/Lower</button>
+              <button class="option-btn" data-value="Push/Pull/Legs">PPL</button>
+              <button class="option-btn" data-value="Bro Split">Bro Split</button>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 text-xs text-white/30 border-t border-[#2a2a2a] pt-3 flex flex-wrap justify-between">
+          <span>Current profile: <span id="profileSummary" class="text-white/60">Not set</span></span>
+          <button class="btn-secondary text-xs" id="clearProfileBtn">Clear Profile</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="plan-card">
+          <div class="text-3xl mb-2">👥</div>
+          <h3 class="plan-name">The Pack</h3>
+          <p class="text-sm text-white/40 mt-1 uppercase tracking-wider">Group Training</p>
+          <div class="price mt-2">$49</div>
+          <p class="text-xs text-white/30">per month</p>
+          <ul class="text-sm text-white/60 mt-3 space-y-1 text-left list-disc list-inside">
+            <li>Unlimited group classes</li>
+            <li>All experience levels</li>
+            <li>Community accountability</li>
+          </ul>
+          <button class="btn-primary w-full justify-center mt-3">Choose Monthly</button>
+        </div>
+        <div class="plan-card border-rust border-2">
+          <div class="text-3xl mb-2">📅</div>
+          <h3 class="plan-name text-rust">The Pack Annual</h3>
+          <p class="text-sm text-white/40 mt-1 uppercase tracking-wider">Best Value</p>
+          <div class="price mt-2">$499</div>
+          <p class="text-xs text-white/30">per year (save $89)</p>
+          <ul class="text-sm text-white/60 mt-3 space-y-1 text-left list-disc list-inside">
+            <li>All monthly benefits</li>
+            <li>2 months free</li>
+            <li>Exclusive annual events</li>
+          </ul>
+          <button class="btn-primary w-full justify-center mt-3 bg-rust-dark hover:bg-rust">Choose Yearly</button>
+        </div>
+        <div class="plan-card">
+          <div class="text-3xl mb-2">⚡</div>
+          <h3 class="plan-name">The Duel</h3>
+          <p class="text-sm text-white/40 mt-1 uppercase tracking-wider">Private 1-on-1</p>
+          <div class="price mt-2">$99</div>
+          <p class="text-xs text-white/30">per session</p>
+          <ul class="text-sm text-white/60 mt-3 space-y-1 text-left list-disc list-inside">
+            <li>Dedicated personal coach</li>
+            <li>Custom programming</li>
+            <li>Flexible scheduling</li>
+          </ul>
+          <button class="btn-primary w-full justify-center mt-3">Book Session</button>
+        </div>
+      </div>
+      <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="glass-card text-center">
+          <p class="text-xs text-white/40 uppercase tracking-wider">Private 5-Pack</p>
+          <p class="text-2xl font-bold text-rust">$450</p>
+          <p class="text-xs text-white/30">($90/session)</p>
+          <button class="btn-secondary text-xs mt-1">Buy 5-Pack</button>
+        </div>
+        <div class="glass-card text-center border-rust border">
+          <p class="text-xs text-white/40 uppercase tracking-wider">Private 10-Pack</p>
+          <p class="text-2xl font-bold text-rust">$850</p>
+          <p class="text-xs text-white/30">($85/session)</p>
+          <button class="btn-secondary text-xs mt-1">Buy 10-Pack</button>
+        </div>
+        <div class="glass-card text-center">
+          <p class="text-xs text-white/40 uppercase tracking-wider">Private Monthly</p>
+          <p class="text-2xl font-bold text-rust">$799</p>
+          <p class="text-xs text-white/30">(8 sessions / month)</p>
+          <button class="btn-secondary text-xs mt-1">Subscribe</button>
+        </div>
+      </div>
+      <div class="mt-5 text-center text-xs text-white/30 vintage-sub border-t border-[#2a2a2a] pt-4">
+        <span class="inline-block px-4 py-1 rounded-full border border-[#2a2a2a]">🏅 Trainers with 10+ years of iron wisdom</span>
+        <span class="inline-block ml-2 px-4 py-1 rounded-full border border-[#2a2a2a]">💪 Custom splits for every goal</span>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // ────────────────────────────────────────────────────────────────
+    // NAVIGATION
+    // ────────────────────────────────────────────────────────────────
+
+    function navigateTo(pageId) {
+      document.querySelectorAll('.page-nav a').forEach(a => {
+        a.classList.toggle('active', a.dataset.page === pageId);
+      });
+
+      document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active');
+        p.style.display = 'none';
+      });
+
+      const targetPage = document.getElementById('page-' + pageId);
+      if (targetPage) {
+        targetPage.style.display = 'block';
+        targetPage.classList.remove('active');
+        void targetPage.offsetHeight;
+        targetPage.classList.add('active');
+      }
+
+      if (pageId !== 'about') {
+        history.pushState(null, null, '#' + pageId);
+      } else {
+        history.pushState(null, null, '#');
+      }
+
+      if (pageId === 'dashboard') {
+        updateDashboardPage();
+        animateNumbers();
+        updateDashboardProfileSummary();
+      }
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // PROFILE MODAL
+    // ────────────────────────────────────────────────────────────────
+
+    function showProfileModal() {
+      const modal = document.getElementById('profileModal');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      // Pre-fill if data exists
+      if (clientProfile) {
+        document.getElementById('modalClientAge').value = clientProfile.age || '';
+        document.getElementById('modalClientExperience').value = clientProfile.experience || '';
+        document.getElementById('modalClientPurpose').value = clientProfile.purpose || '';
+        document.getElementById('modalClientGoals').value = clientProfile.goals || '';
+      }
+    }
+
+    function hideProfileModal() {
+      const modal = document.getElementById('profileModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // DATA & STATE
+    // ────────────────────────────────────────────────────────────────
+
+    const STORAGE_KEYS = {
+      food: 'muscleFit_foodEntries',
+      workouts: 'muscleFit_workoutLogs',
+      profile: 'muscleFit_trainingProfile',
+      clientProfile: 'muscleFit_clientProfile',
+    };
+
+    function getToday() {
+      return new Date().toISOString().split('T')[0];
+    }
+
+    function loadData(key) {
+      try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; }
+    }
+
+    function saveData(key, data) {
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+
+    let foodEntries = loadData(STORAGE_KEYS.food);
+    let workoutLogs = loadData(STORAGE_KEYS.workouts);
+    let profile = JSON.parse(localStorage.getItem(STORAGE_KEYS.profile)) || {
+      experience: null,
+      frequency: null,
+      split: null
+    };
+
+    // ─── CLIENT PROFILE ──────────────────────────────────────────────
+
+    let clientProfile = JSON.parse(localStorage.getItem(STORAGE_KEYS.clientProfile)) || null;
+
+    function saveClientProfile(profileData) {
+      clientProfile = profileData;
+      localStorage.setItem(STORAGE_KEYS.clientProfile, JSON.stringify(profileData));
+      updateProfileDisplay();
+      updateDashboardProfileSummary();
+      hideProfileModal();
+    }
+
+    function loadClientProfile() {
+      if (clientProfile) {
+        document.getElementById('clientAge').value = clientProfile.age || '';
+        document.getElementById('clientExperience').value = clientProfile.experience || '';
+        document.getElementById('clientPurpose').value = clientProfile.purpose || '';
+        document.getElementById('clientGoals').value = clientProfile.goals || '';
+        updateProfileDisplay();
+        updateDashboardProfileSummary();
+      }
+    }
+
+    function updateProfileDisplay() {
+      const display = document.getElementById('profileDisplay');
+      if (clientProfile) {
+        display.classList.remove('hidden');
+        document.getElementById('displayAge').textContent = clientProfile.age || '—';
+        const expMap = {
+          'beginner': 'Beginner (0-1 year)',
+          'intermediate': 'Intermediate (1-3 years)',
+          'advanced': 'Advanced (3-5 years)',
+          'elite': 'Elite (5+ years)'
+        };
+        document.getElementById('displayExperience').textContent = expMap[clientProfile.experience] || clientProfile
+          .experience || '—';
+        const purposeMap = {
+          'weight-loss': 'Weight Loss & Fat Burn',
+          'muscle-gain': 'Muscle Gain & Hypertrophy',
+          'strength': 'Strength & Power',
+          'endurance': 'Endurance & Conditioning',
+          'athletic': 'Athletic Performance',
+          'health': 'General Health & Wellness',
+          'competition': 'Competition Prep'
+        };
+        document.getElementById('displayPurpose').textContent = purposeMap[clientProfile.purpose] || clientProfile.purpose ||
+          '—';
+        document.getElementById('displayGoals').textContent = clientProfile.goals || 'Not specified';
+      } else {
+        display.classList.add('hidden');
+      }
+    }
+
+    function updateDashboardProfileSummary() {
+      const container = document.getElementById('dashProfileSummary');
+      if (clientProfile) {
+        const expMap = {
+          'beginner': 'Beginner',
+          'intermediate': 'Intermediate',
+          'advanced': 'Advanced',
+          'elite': 'Elite'
+        };
+        const purposeMap = {
+          'weight-loss': '🔥 Fat Loss',
+          'muscle-gain': '💪 Muscle Gain',
+          'strength': '⚡ Strength',
+          'endurance': '🏃 Endurance',
+          'athletic': '🎯 Athletic',
+          'health': '❤️ Health',
+          'competition': '🏆 Competition'
+        };
+        const parts = [];
+        if (clientProfile.age) parts.push(`🎂 ${clientProfile.age} yrs`);
+        if (clientProfile.experience) parts.push(`📈 ${expMap[clientProfile.experience] || clientProfile.experience}`);
+        if (clientProfile.purpose) parts.push(`🎯 ${purposeMap[clientProfile.purpose] || clientProfile.purpose}`);
+        container.innerHTML = parts.length ? parts.join(' · ') : '';
+        document.getElementById('dashName').textContent = clientProfile.age ? `Athlete (${clientProfile.age})` : 'Athlete';
+      } else {
+        container.innerHTML = '👤 No profile set – <a href="#" onclick="navigateTo(\'profile\'); return false;" class="text-rust hover:underline">complete your profile</a>';
+        document.getElementById('dashName').textContent = 'Athlete';
+      }
+    }
+
+    // ─── FOOD MACRO DATABASE ─────────────────────────────────────────
+
+    const FOOD_DB = [{
+      name: 'chicken breast',
+      calories: 165,
+      protein: 31,
+      carbs: 0,
+      fats: 3.6
+    }, {
+      name: 'chicken thigh',
+      calories: 209,
+      protein: 26,
+      carbs: 0,
+      fats: 11
+    }, {
+      name: 'rice',
+      calories: 130,
+      protein: 2.7,
+      carbs: 28,
+      fats: 0.3
+    }, {
+      name: 'brown rice',
+      calories: 111,
+      protein: 2.6,
+      carbs: 23,
+      fats: 0.9
+    }, {
+      name: 'egg',
+      calories: 155,
+      protein: 13,
+      carbs: 1.1,
+      fats: 11
+    }, {
+      name: 'egg white',
+      calories: 52,
+      protein: 11,
+      carbs: 0.7,
+      fats: 0.2
+    }, {
+      name: 'oats',
+      calories: 389,
+      protein: 16.9,
+      carbs: 66,
+      fats: 6.9
+    }, {
+      name: 'banana',
+      calories: 89,
+      protein: 1.1,
+      carbs: 22.8,
+      fats: 0.3
+    }, {
+      name: 'broccoli',
+      calories: 34,
+      protein: 2.8,
+      carbs: 7,
+      fats: 0.4
+    }, {
+      name: 'sweet potato',
+      calories: 86,
+      protein: 1.6,
+      carbs: 20,
+      fats: 0.1
+    }, {
+      name: 'salmon',
+      calories: 208,
+      protein: 22,
+      carbs: 0,
+      fats: 13
+    }, {
+      name: 'tuna',
+      calories: 132,
+      protein: 28,
+      carbs: 0,
+      fats: 1.3
+    }, {
+      name: 'whey protein',
+      calories: 380,
+      protein: 80,
+      carbs: 6,
+      fats: 3
+    }, {
+      name: 'olive oil',
+      calories: 884,
+      protein: 0,
+      carbs: 0,
+      fats: 100
+    }, {
+      name: 'almonds',
+      calories: 579,
+      protein: 21,
+      carbs: 22,
+      fats: 49
+    }, {
+      name: 'peanut butter',
+      calories: 588,
+      protein: 25,
+      carbs: 20,
+      fats: 50
+    }, {
+      name: 'greek yogurt',
+      calories: 59,
+      protein: 10,
+      carbs: 3.6,
+      fats: 0.4
+    }, {
+      name: 'cottage cheese',
+      calories: 98,
+      protein: 11,
+      carbs: 3.4,
+      fats: 4.3
+    }, {
+      name: 'tofu',
+      calories: 76,
+      protein: 8,
+      carbs: 1.9,
+      fats: 4.8
+    }, {
+      name: 'quinoa',
+      calories: 120,
+      protein: 4.4,
+      carbs: 21,
+      fats: 1.9
+    }, {
+      name: 'pasta',
+      calories: 131,
+      protein: 5,
+      carbs: 25,
+      fats: 1.1
+    }, {
+      name: 'potato',
+      calories: 77,
+      protein: 2,
+      carbs: 17,
+      fats: 0.1
+    }, {
+      name: 'avocado',
+      calories: 160,
+      protein: 2,
+      carbs: 8.5,
+      fats: 14.7
+    }, {
+      name: 'beef mince',
+      calories: 254,
+      protein: 26,
+      carbs: 0,
+      fats: 17
+    }, {
+      name: 'steak',
+      calories: 271,
+      protein: 26,
+      carbs: 0,
+      fats: 19
+    }, {
+      name: 'milk',
+      calories: 42,
+      protein: 3.4,
+      carbs: 5,
+      fats: 1
+    }, {
+      name: 'protein bar',
+      calories: 380,
+      protein: 30,
+      carbs: 40,
+      fats: 10
+    }];
+
+    // ─── INSTANT AUTO-LOOKUP ────────────────────────────────────────
+
+    function findFood(query) {
+      const q = query.toLowerCase().trim();
+      if (!q) return null;
+      let found = FOOD_DB.find(f => f.name === q);
+      if (found) return found;
+      found = FOOD_DB.find(f => f.name.includes(q) || q.includes(f.name));
+      return found || null;
+    }
+
+    function autoFillMacros() {
+      const nameInput = document.getElementById('foodName');
+      const gramsInput = document.getElementById('foodGrams');
+      const calInput = document.getElementById('foodCal');
+      const proteinInput = document.getElementById('foodProtein');
+      const carbsInput = document.getElementById('foodCarbs');
+      const fatsInput = document.getElementById('foodFats');
+      const hint = document.getElementById('foodHint');
+
+      const name = nameInput.value.trim();
+      if (!name) {
+        calInput.value = '';
+        proteinInput.value = '';
+        carbsInput.value = '';
+        fatsInput.value = '';
+        hint.textContent = '💡 Type a food name – macros auto‑fill';
+        hint.className = 'food-hint';
+        return;
+      }
+
+      const food = findFood(name);
+      if (!food) {
+        calInput.value = '';
+        proteinInput.value = '';
+        carbsInput.value = '';
+        fatsInput.value = '';
+        hint.textContent = `❌ "${name}" not found – try chicken, rice, oats, etc.`;
+        hint.className = 'food-hint not-found';
+        return;
+      }
+
+      let grams = parseFloat(gramsInput.value);
+      if (isNaN(grams) || grams <= 0) grams = 100;
+
+      const ratio = grams / 100;
+      const cal = Math.round(food.calories * ratio);
+      const protein = Math.round(food.protein * ratio * 10) / 10;
+      const carbs = Math.round(food.carbs * ratio * 10) / 10;
+      const fats = Math.round(food.fats * ratio * 10) / 10;
+
+      calInput.value = cal;
+      proteinInput.value = protein;
+      carbsInput.value = carbs;
+      fatsInput.value = fats;
+
+      [calInput, proteinInput, carbsInput, fatsInput].forEach(el => {
+        el.classList.add('macro-auto');
+        setTimeout(() => el.classList.remove('macro-auto'), 1500);
+      });
+
+      hint.textContent = `✅ ${food.name} – ${grams}g → ${cal} cal, ${protein}g P, ${carbs}g C, ${fats}g F`;
+      hint.className = 'food-hint found';
+
+      if (!gramsInput.value) {
+        gramsInput.value = 100;
+      }
+    }
+
+    // ─── DASHBOARD ────────────────────────────────────────────────────
+
+    function updateDashboardPage() {
+      const today = getToday();
+      const todayFood = foodEntries.filter(e => e.date === today);
+      const todayWorkouts = workoutLogs.filter(w => w.date === today);
+
+      let cal = 0,
+        protein = 0,
+        carbs = 0;
+      todayFood.forEach(e => {
+        cal += Number(e.cal) || 0;
+        protein += Number(e.protein) || 0;
+        carbs += Number(e.carbs) || 0;
+      });
+
+      document.getElementById('dashCalories').textContent = cal;
+      document.getElementById('dashProtein').textContent = protein + 'g';
+      document.getElementById('dashCarbs').textContent = carbs + 'g';
+
+      const today2 = new Date();
+      const weekAgo = new Date(today2);
+      weekAgo.setDate(today2.getDate() - 7);
+      const weekStr = weekAgo.toISOString().split('T')[0];
+      const weekWorkouts = workoutLogs.filter(w => w.date >= weekStr);
+      document.getElementById('dashWorkouts').textContent = weekWorkouts.length;
+
+      document.getElementById('dashStreak').textContent = calculateStreak();
+
+      if (workoutLogs.length > 0) {
+        const sorted = [...workoutLogs].sort((a, b) => b.date.localeCompare(a.date));
+        document.getElementById('dashLastWorkout').textContent = sorted[0].date;
+      } else {
+        document.getElementById('dashLastWorkout').textContent = '—';
+      }
+    }
+
+    function animateNumbers() {
+      document.querySelectorAll('.stat-number').forEach(el => {
+        el.style.transition = 'all 0.5s ease';
+        el.style.transform = 'scale(1.1)';
+        setTimeout(() => { el.style.transform = 'scale(1)'; }, 200);
+      });
+    }
+
+    // ─── FOOD ──────────────────────────────────────────────────────────
+
+    function renderFoods() {
+      const container = document.getElementById('foodListContainer');
+      const today = getToday();
+      const todayEntries = foodEntries.filter(e => e.date === today);
+      if (todayEntries.length === 0) {
+        container.innerHTML = `<div class="empty-state">No fuel logged today. Feed the machine.</div>`;
+      } else {
+        container.innerHTML = todayEntries.map((item, idx) => `
+              <div class="food-item">
+                <span class="food-name">${item.name}</span>
+                <span class="food-macros">
+                  <span>🔥 ${item.cal}</span>
+                  <span>💪 ${item.protein}g</span>
+                  <span>🌾 ${item.carbs}g</span>
+                  <span>🧈 ${item.fats}g</span>
+                </span>
+                <button class="btn-danger" onclick="deleteFoodEntry(${idx})">✕</button>
+              </div>
+            `).join('');
+      }
+      document.getElementById('foodCount').textContent = todayEntries.length;
+      updateMacros();
+    }
+
+    function updateMacros() {
+      const today = getToday();
+      const todayEntries = foodEntries.filter(e => e.date === today);
+      let totalCal = 0,
+        totalProtein = 0,
+        totalCarbs = 0,
+        totalFats = 0;
+      todayEntries.forEach(e => {
+        totalCal += Number(e.cal) || 0;
+        totalProtein += Number(e.protein) || 0;
+        totalCarbs += Number(e.carbs) || 0;
+        totalFats += Number(e.fats) || 0;
+      });
+      document.getElementById('macroCalTotal').textContent = totalCal;
+      document.getElementById('macroProteinTotal').textContent = totalProtein + 'g';
+      document.getElementById('macroCarbsTotal').textContent = totalCarbs + 'g';
+      document.getElementById('macroFatsTotal').textContent = totalFats + 'g';
+      const calGoal = 2500,
+        proteinGoal = 180,
+        carbsGoal = 300,
+        fatsGoal = 70;
+      document.getElementById('macroCalBar').style.width = Math.min(100, (totalCal / calGoal) * 100) + '%';
+      document.getElementById('macroProteinBar').style.width = Math.min(100, (totalProtein / proteinGoal) * 100) + '%';
+      document.getElementById('macroCarbsBar').style.width = Math.min(100, (totalCarbs / carbsGoal) * 100) + '%';
+      document.getElementById('macroFatsBar').style.width = Math.min(100, (totalFats / fatsGoal) * 100) + '%';
+    }
+
+    function deleteFoodEntry(index) {
+      const today = getToday();
+      const todayEntries = foodEntries.filter(e => e.date === today);
+      const realIndex = foodEntries.indexOf(todayEntries[index]);
+      if (realIndex !== -1) {
+        foodEntries.splice(realIndex, 1);
+        saveData(STORAGE_KEYS.food, foodEntries);
+        renderFoods();
+        updateDashboardPage();
+      }
+    }
+
+    // ─── WORKOUT LOG ──────────────────────────────────────────────────
+
+    function renderWorkouts() {
+      const container = document.getElementById('workoutListContainer');
+      const today = getToday();
+      const todayLogs = workoutLogs.filter(w => w.date === today);
+      if (todayLogs.length === 0) {
+        container.innerHTML = `<div class="empty-state">No iron logged today. Get to work.</div>`;
+      } else {
+        container.innerHTML = todayLogs.map((log, idx) => `
+              <div class="log-item">
+                <div>
+                  <span class="font-medium text-white/90">${log.exercise}</span>
+                  <span class="text-sm text-white/40 ml-2">${log.sets}×${log.reps} · ${log.weight}kg</span>
+                </div>
+                <div class="log-actions">
+                  <button class="btn-danger" onclick="deleteWorkoutEntry(${idx})">✕</button>
+                </div>
+              </div>
+            `).join('');
+      }
+      document.getElementById('logCount').textContent = todayLogs.length + ' exercises logged today';
+      updateDashboardPage();
+    }
+
+    function deleteWorkoutEntry(index) {
+      const today = getToday();
+      const todayLogs = workoutLogs.filter(w => w.date === today);
+      const realIndex = workoutLogs.indexOf(todayLogs[index]);
+      if (realIndex !== -1) {
+        workoutLogs.splice(realIndex, 1);
+        saveData(STORAGE_KEYS.workouts, workoutLogs);
+        renderWorkouts();
+        updateDashboardPage();
+      }
+    }
+
+    function calculateStreak() {
+      if (workoutLogs.length === 0) return 0;
+      const dates = [...new Set(workoutLogs.map(w => w.date))].sort();
+      const todayStr = getToday();
+      let streak = 0;
+      let currentDate = new Date(todayStr);
+      if (!dates.includes(todayStr)) {
+        currentDate.setDate(currentDate.getDate() - 1);
+      }
+      while (true) {
+        const d = currentDate.toISOString().split('T')[0];
+        if (dates.includes(d)) {
+          streak++;
+          currentDate.setDate(currentDate.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    // ─── LIBRARY ──────────────────────────────────────────────────────
+
+    const libraryData = [{
+      id: 1,
+      name: 'Full Body Basics',
+      level: 'beginner',
+      steps: ['3×10 Goblet Squats', '3×12 Dumbbell Rows', '3×10 Push-ups', '3×15 Glute Bridges', '2×30 sec Plank']
+    }, {
+      id: 2,
+      name: 'Upper Body Push',
+      level: 'beginner',
+      steps: ['3×10 Dumbbell Bench Press', '3×12 Seated Dumbbell Shoulder Press', '3×15 Tricep Dips',
+        '3×10 Lateral Raises'
+      ]
+    }, {
+      id: 3,
+      name: 'Lower Body Strength',
+      level: 'intermediate',
+      steps: ['4×8 Barbell Squats', '4×10 Romanian Deadlifts', '3×12 Walking Lunges', '3×15 Leg Curls',
+        '3×10 Calf Raises'
+      ]
+    }, {
+      id: 4,
+      name: 'Push/Pull Power',
+      level: 'intermediate',
+      steps: ['4×8 Bench Press', '4×10 Bent Over Rows', '3×12 Overhead Press', '3×10 Pull-ups',
+        '3×15 Face Pulls'
+      ]
+    }, {
+      id: 5,
+      name: 'Advanced Hypertrophy',
+      level: 'advanced',
+      steps: ['5×5 Squats (heavy)', '5×5 Deadlifts', '4×8 Incline Bench', '4×10 Barbell Rows', '3×12 Dips',
+        '3×15 Chin-ups'
+      ]
+    }, {
+      id: 6,
+      name: 'Strength & Conditioning',
+      level: 'advanced',
+      steps: ['4×6 Power Cleans', '4×8 Front Squats', '3×10 Pull-ups (weighted)', '3×12 Turkish Get-ups',
+        '4×10 Kettlebell Swings'
+      ]
+    }, {
+      id: 7,
+      name: 'Day 1: Chest, Triceps & Rear Delts',
+      level: 'elite',
+      steps: [
+        'Incline Dumbbell Press: 4×6-8',
+        'Machine Chest Press (GVT): 10×10',
+        'Tri‑set: Barbell JM Press 2×8-10, Machine Dips 2×10-12, Standing Overhead Cable Tri Ext 2×12-15',
+        'Superset: Standing Single Arm Forward Cable Ext 3×12-15, Cable Facepull 3×12-15'
+      ]
+    }, {
+      id: 8,
+      name: 'Day 2: Back & Biceps',
+      level: 'elite',
+      steps: [
+        'Underhand Grip Barbell Row: 4×6-8',
+        'Chest Supported Dumbbell Row (GVT): 10×10',
+        'Tri‑set: EZ Bar Preacher Curl 4×8-10, Standing Reverse Grip EZ Bar Curl 4×10-12, Low Pulley Cable Curl 4×12-15',
+        'Superset: Machine Pullover 3×10-12, Fat Gripz Machine Preacher Curl 3×12-15'
+      ]
+    }, {
+      id: 9,
+      name: 'Day 3: Quads & Calves',
+      level: 'elite',
+      steps: [
+        'Belt Squat: 3-4×10-12',
+        'Tri‑set: Pendulum Squat 3×10-12, Hack Squat 3×10-12, Leg Press 3×8-10',
+        'Superset: Leg Extension 3×10-12, Seated Hip Adduction 3×12-15',
+        'Seated Calf Raise: 3×12-15'
+      ]
+    }, {
+      id: 10,
+      name: 'Day 5: Shoulders',
+      level: 'elite',
+      steps: [
+        'Machine/Cable Side Raise: 4×10-15',
+        'Machine Shoulder Press: 4×8-10',
+        'Superset: Reverse Pec Deck 4×10-12, Seated Dumbbell Side Raise 4×10-12',
+        'Seated Dumbbell Shoulder Press: 3×10-12'
+      ]
+    }, {
+      id: 11,
+      name: 'Day 6: Arms',
+      level: 'elite',
+      steps: [
+        'Tri‑set: Rope Overhead Cable Ext 4×10-12, Decline Cable Skull Crusher 4×10-12, Rope Cable Pressdown 4×10-12',
+        'Tri‑set: EZ Bar Reverse Grip Preacher Curl 4×8-10, Wide Incline Dumbbell Curl 4×10-12, Machine Preacher Curl 4×10-12',
+        'Superset: Machine Dips 2×10-12, Bodyweight Dips 2×failure',
+        'Standing Dumbbell Hammer Curls: 3×10-12'
+      ]
+    }, {
+      id: 12,
+      name: 'Day 7: Chest & Back (Arnold Style)',
+      level: 'elite',
+      steps: [
+        'Superset: Incline Dumbbell Press 4×10-12, Underhand Lat Pulldown 4×10-12',
+        'Superset: Chest Supported T‑Bar Row 4×10-12, Incline Machine Press 4×10-12',
+        'Superset: Incline Machine Fly 4×10-12, Pullover Machine 4×10-12',
+        'Standing Cable Crunches: 3×15-20'
+      ]
+    }, {
+      id: 13,
+      name: 'Day 8: Hamstrings, Glutes & Calves',
+      level: 'elite',
+      steps: [
+        'Seated Hip Abduction: 3×10-12',
+        'Seated Leg Curl: 3×10-12',
+        'Seated Hip Adduction Machine: 3×10-12',
+        'Plate Loaded Hip Thrust Machine: 3×10-12',
+        'Barbell Stiff Leg Deadlift: 3×6-8',
+        'Lying Leg Curl: 3×10-12',
+        'Standing Calf Raises: 3×10-12'
+      ]
+    }];
+
+    function renderLibrary(filter = 'all') {
+      const grid = document.getElementById('libraryGrid');
+      const filtered = filter === 'all' ? libraryData : libraryData.filter(item => item.level === filter);
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full empty-state">No routines for this level.</div>`;
+        return;
+      }
+      grid.innerHTML = filtered.map(item => `
+            <div class="library-card">
+              <div class="flex justify-between items-start mb-2">
+                <h4 class="font-semibold text-white/90">${item.name}</h4>
+                <span class="level-badge ${item.level}">${item.level}</span>
+              </div>
+              <ul class="text-sm text-white/60 space-y-1 flex-1">
+                ${item.steps.map(step => `<li>• ${step}</li>`).join('')}
+              </ul>
+            </div>
+          `).join('');
+    }
+
+    // ─── PROFILE (training profile – legacy) ──────────────────────────
+
+    function updateProfileUI() {
+      document.querySelectorAll('#expSelector .option-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === profile.experience);
+      });
+      document.querySelectorAll('#freqSelector .option-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === profile.frequency);
+      });
+      document.querySelectorAll('#splitSelector .option-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === profile.split);
+      });
+      const parts = [];
+      if (profile.experience) parts.push(profile.experience + ' yrs');
+      if (profile.frequency) parts.push(profile.frequency + 'x/week');
+      if (profile.split) parts.push(profile.split);
+      document.getElementById('profileSummary').textContent = parts.length ? parts.join(' · ') : 'Not set';
+    }
+
+    function saveTrainingProfile() {
+      localStorage.setItem(STORAGE_KEYS.profile, JSON.stringify(profile));
+      updateProfileUI();
+    }
+
+    function setupProfileSelectors() {
+      const selectors = [
+        { id: 'expSelector', key: 'experience' },
+        { id: 'freqSelector', key: 'frequency' },
+        { id: 'splitSelector', key: 'split' }
+      ];
+      selectors.forEach(({ id, key }) => {
+        document.getElementById(id).addEventListener('click', function(e) {
+          const btn = e.target.closest('.option-btn');
+          if (!btn) return;
+          const value = btn.dataset.value;
+          if (profile[key] === value) {
+            profile[key] = null;
+          } else {
+            profile[key] = value;
+          }
+          saveTrainingProfile();
+        });
+      });
+      // Note: clearProfileBtn is used for client profile, not training profile
+    }
+
+    // ─── HASH ROUTING ─────────────────────────────────────────────────
+
+    function handleHash() {
+      const hash = window.location.hash.replace('#', '');
+      const validPages = ['about', 'profile', 'dashboard', 'fuel', 'ironlog', 'library', 'plans'];
+      const page = validPages.includes(hash) ? hash : 'about';
+      const currentActive = document.querySelector('.page.active');
+      if (currentActive && currentActive.id === 'page-' + page) return;
+      navigateTo(page);
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // INIT
+    // ────────────────────────────────────────────────────────────────
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+      document.getElementById('currentDateDisplay').textContent = new Date().toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+      });
+
+      // ─── NAV CLICKS ──────────────────────────────────────────────
+
+      document.querySelectorAll('.page-nav a').forEach(a => {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          const page = this.dataset.page;
+          if (page) navigateTo(page);
+        });
+      });
+
+      window.addEventListener('hashchange', handleHash);
+
+      // ─── CLIENT PROFILE FORM (standalone page) ──────────────────
+
+      document.getElementById('clientProfileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const age = document.getElementById('clientAge').value;
+        const experience = document.getElementById('clientExperience').value;
+        const purpose = document.getElementById('clientPurpose').value;
+        const goals = document.getElementById('clientGoals').value;
+
+        if (!age || !experience || !purpose) {
+          alert('Please fill in Age, Experience, and Purpose.');
+          return;
+        }
+
+        const profileData = { age: parseInt(age), experience, purpose, goals };
+        saveClientProfile(profileData);
+        alert('✅ Profile saved successfully!');
+      });
+
+      document.getElementById('clearProfileBtn').addEventListener('click', function() {
+        if (confirm('Clear your profile data?')) {
+          localStorage.removeItem(STORAGE_KEYS.clientProfile);
+          clientProfile = null;
+          document.getElementById('clientAge').value = '';
+          document.getElementById('clientExperience').value = '';
+          document.getElementById('clientPurpose').value = '';
+          document.getElementById('clientGoals').value = '';
+          updateProfileDisplay();
+          updateDashboardProfileSummary();
+          alert('Profile cleared.');
+        }
+      });
+
+      // ─── PROFILE MODAL FORM ──────────────────────────────────────
+
+      document.getElementById('modalProfileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const age = document.getElementById('modalClientAge').value;
+        const experience = document.getElementById('modalClientExperience').value;
+        const purpose = document.getElementById('modalClientPurpose').value;
+        const goals = document.getElementById('modalClientGoals').value;
+
+        if (!age || !experience || !purpose) {
+          alert('Please fill in Age, Experience, and Purpose.');
+          return;
+        }
+
+        const profileData = { age: parseInt(age), experience, purpose, goals };
+        saveClientProfile(profileData);
+        // Also sync with the standalone form
+        document.getElementById('clientAge').value = age;
+        document.getElementById('clientExperience').value = experience;
+        document.getElementById('clientPurpose').value = purpose;
+        document.getElementById('clientGoals').value = goals;
+        updateProfileDisplay();
+        updateDashboardProfileSummary();
+        hideProfileModal();
+        // Show a quick confirmation
+        const btn = document.querySelector('#modalProfileForm button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✅ Welcome!';
+        setTimeout(() => { btn.innerHTML = originalText; }, 1500);
+      });
+
+      // ─── MODAL CLOSE ─────────────────────────────────────────────
+
+      document.getElementById('modalCloseBtn').addEventListener('click', function() {
+        // Only allow close if profile already exists
+        if (clientProfile) {
+          hideProfileModal();
+        } else {
+          alert('Please complete your profile to enter the forge.');
+        }
+      });
+
+      // ─── FOOD AUTO-LOOKUP ────────────────────────────────────────
+
+      const foodNameInput = document.getElementById('foodName');
+      const foodGramsInput = document.getElementById('foodGrams');
+
+      foodNameInput.addEventListener('input', autoFillMacros);
+      foodNameInput.addEventListener('blur', autoFillMacros);
+      foodGramsInput.addEventListener('input', autoFillMacros);
+      foodNameInput.addEventListener('change', autoFillMacros);
+
+      // ─── GRAMS RESET BUTTON ──────────────────────────────────────
+
+      document.getElementById('clearGramsBtn').addEventListener('click', function() {
+        const gramsInput = document.getElementById('foodGrams');
+        gramsInput.value = 100;
+        autoFillMacros();
+        gramsInput.classList.add('macro-auto');
+        setTimeout(() => gramsInput.classList.remove('macro-auto'), 500);
+      });
+
+      // ─── ADD FOOD ─────────────────────────────────────────────────
+
+      document.getElementById('addFoodBtn').addEventListener('click', function() {
+        const name = document.getElementById('foodName').value.trim();
+        const cal = parseFloat(document.getElementById('foodCal').value);
+        const protein = parseFloat(document.getElementById('foodProtein').value);
+        const carbs = parseFloat(document.getElementById('foodCarbs').value);
+        const fats = parseFloat(document.getElementById('foodFats').value);
+
+        if (!name || isNaN(cal) || isNaN(protein) || isNaN(carbs) || isNaN(fats)) {
+          alert('Fill all fields with valid numbers. Try typing a food name first!');
+          return;
+        }
+
+        foodEntries.push({ date: getToday(), name, cal, protein, carbs, fats });
+        saveData(STORAGE_KEYS.food, foodEntries);
+        renderFoods();
+        updateDashboardPage();
+
+        document.getElementById('foodName').value = '';
+        document.getElementById('foodGrams').value = '';
+        document.getElementById('foodCal').value = '';
+        document.getElementById('foodProtein').value = '';
+        document.getElementById('foodCarbs').value = '';
+        document.getElementById('foodFats').value = '';
+        document.getElementById('foodHint').textContent = '💡 Type a food name – macros auto‑fill';
+        document.getElementById('foodHint').className = 'food-hint';
+      });
+
+      // ─── ADD WORKOUT ─────────────────────────────────────────────
+
+      document.getElementById('addWorkoutBtn').addEventListener('click', function() {
+        const exercise = document.getElementById('exerciseName').value.trim();
+        const sets = parseInt(document.getElementById('exerciseSets').value);
+        const reps = parseInt(document.getElementById('exerciseReps').value);
+        const weight = parseFloat(document.getElementById('exerciseWeight').value);
+        if (!exercise || isNaN(sets) || isNaN(reps) || isNaN(weight)) {
+          alert('Fill all fields with valid numbers.');
+          return;
+        }
+        workoutLogs.push({ date: getToday(), exercise, sets, reps, weight });
+        saveData(STORAGE_KEYS.workouts, workoutLogs);
+        renderWorkouts();
+        updateDashboardPage();
+        document.getElementById('exerciseName').value = '';
+        document.getElementById('exerciseSets').value = '';
+        document.getElementById('exerciseReps').value = '';
+        document.getElementById('exerciseWeight').value = '';
+      });
+
+      // ─── LIBRARY FILTERS ─────────────────────────────────────────
+
+      document.getElementById('filterContainer').addEventListener('click', function(e) {
+        const btn = e.target.closest('.filter-btn');
+        if (btn) {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderLibrary(btn.dataset.filter);
+        }
+      });
+
+      // ─── PROFILE (training) ──────────────────────────────────────
+
+      setupProfileSelectors();
+      updateProfileUI();
+
+      // ─── INITIAL RENDERS ─────────────────────────────────────────
+
+      renderFoods();
+      renderWorkouts();
+      renderLibrary('all');
+      updateDashboardPage();
+      loadClientProfile();
+      updateDashboardProfileSummary();
+
+      handleHash();
+
+      // ─── SHOW PROFILE MODAL IF NO PROFILE ───────────────────────
+
+      // Small delay to let the page render first
+      setTimeout(() => {
+        if (!clientProfile) {
+          showProfileModal();
+        }
+      }, 400);
+
+      setTimeout(animateNumbers, 600);
+    });
+
+    // Expose
+    window.navigateTo = navigateTo;
+    window.deleteFoodEntry = deleteFoodEntry;
+    window.deleteWorkoutEntry = deleteWorkoutEntry;
+  </script>
+
+</body>
+</html>
